@@ -1,18 +1,20 @@
-
 import 'package:flutter/material.dart';
 import 'package:credicxotask/models/music_model.dart';
 
-//import 'package:credicxotask/pages/song_details.dart';
+import 'package:credicxotask/pages/music_info.dart';
 import 'package:credicxotask/widgets/transparent_chip.dart';
+import 'package:credicxotask/bloc_services/check_connectivity_bloc.dart';
+import 'package:credicxotask/bloc_services/loading_bloc.dart';
+import 'package:credicxotask/bloc_services/bookmarks_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SongCard extends StatelessWidget {
-  MusicModel song;
+  final MusicModel song;
 
 
-  SongCard({this.song,});
-
-
-
+  SongCard({
+    this.song,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,26 @@ class SongCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-//          Navigator.push(
-//              context,
-//              MaterialPageRoute(
-//                  builder: (context) => SongDetails(song: song,)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => ConnectivityBloc(),
+                ),
+                BlocProvider(
+                  create: (_) => LoadingBloc(),
+                ),
+                BlocProvider(
+                  create: (_) => BookMarkBloc(),
+                ),
+              ],
+              child: SongDetails(
+                        song: song,
+                      )))).then((value) {
+            context.bloc<BookMarkBloc>().add(BookMarkEvent.removed);
+          });
         },
         child: ClipRRect(
           borderRadius: BorderRadius.only(
@@ -72,13 +90,20 @@ class SongCard extends StatelessWidget {
                 alignment: Alignment.center,
                 child: TransparentChip(
                   label: song.name.trim(),
+                  size: 20,
                 ),
               ),
               Align(
                 alignment: Alignment.bottomRight,
                 child: TransparentChip(
-                  label: song.trackId,
-
+                  label: song.artistName.trim(),
+                  size: 16,
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: TransparentChip(
+                  label: song.albumName.trim(),
                   size: 16,
                 ),
               )
@@ -91,7 +116,7 @@ class SongCard extends StatelessWidget {
 
   Widget background() {
     return Center(
-      child:Image.asset('assets/song.png'),
+      child: Image.asset('assets/song.png'),
     );
   }
 }

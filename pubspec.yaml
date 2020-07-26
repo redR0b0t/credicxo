@@ -26,6 +26,15 @@ dependencies:
   http:
   flutter_bloc: ^6.0.1
   flutter_spinkit:
+  url_launcher:
+  font_awesome_flutter:
+  connectivity:
+  fluttertoast:
+  hive: ^1.4.1+1
+  hive_flutter: ^0.3.0+2
+  path_provider: ^1.6.5
+  hive_generator: ^0.7.0+2
+  build_runner: ^1.8.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,6 +59,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/song.png
+    - bg.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

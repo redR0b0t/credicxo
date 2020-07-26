@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TransparentChip extends StatelessWidget {
-  String label;
-  double size;
+  final String label;
+  final double size;
 
   TransparentChip({this.label = '', this.size = 25});
 

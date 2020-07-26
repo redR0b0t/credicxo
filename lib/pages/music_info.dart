@@ -1,297 +1,380 @@
-//import 'dart:ui';
-//
-//import 'package:cached_network_image/cached_network_image.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/material.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:credicxotask/data/data.dart';
-//import 'package:credicxotask/utils/date_time_helper.dart';
-//import 'package:credicxotask/utils/fetch_dev.dart';
-//import 'package:credicxotask/utils/style_guide.dart';
-//import 'package:credicxotask/widgets/background.dart';
-//import 'package:url_launcher/url_launcher.dart';
-//import 'package:credicxotask/models/purchased_token_model.dart';
-//import 'package:credicxotask/pages/screens/contact_support.dart';
-//
-//class SongDetails extends StatefulWidget {
-//  MusicModel song;
-//
-//  Gradient gradient;
-//
-//  //CallbackAction call;
-//
-//  SongDetails({this.song, });
-//
-//  @override
-//  _SongDetailsState createState() => _SongDetailsState();
-//}
-//
-//class _SongDetailsState extends State<SongDetails> {
-//  DateTime deadline;
-//
-//
-//  initState(){
-//    super.initState();
-//    deadline=(widget.song.buyTime as Timestamp).toDate().add(new Duration(days: 3));
-//  }
-//  //int days=DateTime.now().difference((widget.song['event_date'] as Timestamp).toDate()).inDays;
-//  String time_rem() {
-//
-//    int days = -1 *
-//        DateTime.now()
-//            .difference((deadline as Timestamp).toDate())
-//            .inDays
-//            .toInt();
-//    int hrs = -1 *
-//        DateTime.now()
-//            .difference((deadline as Timestamp).toDate())
-//            .inHours
-//            .toInt();
-//    int min = -1 *
-//        DateTime.now()
-//            .difference((deadline as Timestamp).toDate())
-//            .inMinutes
-//            .toInt();
-//    int sec = -1 *
-//        DateTime.now()
-//            .difference((deadline as Timestamp).toDate())
-//            .inSeconds
-//            .toInt();
-//    // int cDays=DateTime.now().add;
-//    //return "$days Days:$hrs Hours:$min Minutes:$sec Seconds remaining";
-//    // return days>=1?"$days Days ":hrs>1?"$hrs Hours" :min>1?"$min Minutes":sec>60?"$sec Seconds ":"Starting soon";
-//    // return "$days days";
-//    if (days > 1)
-//      return "$days Days";
-//    else if (hrs > 1)
-//      return "$hrs Hours";
-//    else if (min > 1)
-//      return "$min Minutes";
-//    else if (sec > 1)
-//      return "$sec Seconds";
-//    else
-//      return "0";
-//  }
-//  void _contactSupport(){
-//    //whatsapp api call
-//  }
-//
-//
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      body: NestedScrollView(
-//        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-//          return <Widget>[
-//            SliverAppBar(
-//              expandedHeight: 200.0,
-//              floating: false,
-//              pinned: true,
-//              flexibleSpace: FlexibleSpaceBar(
-//                  centerTitle: true,
-//                  title: Container(
-//                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-//                    decoration: BoxDecoration(
-//                      color: Colors.transparent.withOpacity(0.45),
-//                      borderRadius: BorderRadius.circular(10.0),
-//                      boxShadow: [
-//                        BoxShadow(
-//                          color: Colors.black12,
-//                          offset: Offset(0.0, 15.0),
-//                          blurRadius: 15.0,
-//                        ),
-//                        BoxShadow(
-//                          color: Colors.black12,
-//                          offset: Offset(0.0, -10.0),
-//                          blurRadius: 10.0,
-//                        ),
-//                      ],
-//                    ),
-//                    child: Text("song ${widget.song.songPrice}(QxCredit)",
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 16.4,
-//                            shadows: [
-//                              Shadow(
-//                                blurRadius: 10.0,
-//                                color: Colors.black,
-//                                offset: Offset(5.0, 5.0),
-//                              ),
-//                            ],
-//                            fontFamily: "RobotoRegular")),
-//                  ),
-//                  background:Image.asset("assets/song.png")
-//              ),
-//            ),
-//          ];
-//        },
-//        body: Stack(
-//          children: <Widget>[
-//            Background(),
-//            Container(
-//              height: MediaQuery.of(context).size.height,
-//              //color: Colors.red,
-//              child: ListView(
-//                children: <Widget>[
-//                  decriptionCard('Description', '${widget.song.songPrice}'),
-//                  rewardCard(),
-//                  timingCard(),
-//                  contactCard(),
-//                  SizedBox(
-//                    height: 15,
-//                  ),
-//                  Container(
-//                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-//                    //width: MediaQuery.of(context).size.width * 0.5,
-//                    child:  RaisedButton(
-//                      padding: EdgeInsets.symmetric(
-//                          horizontal: 10, vertical: 15),
-//                      color: Colors.blue.shade800,
-//                      onPressed: () {
-//                        Navigator.push(context,MaterialPageRoute(builder: (context)=>ContactSupport(replace:false)));
-//                        // _launchWhatsApp();
-//
-//                      },
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius:
-//                          BorderRadius.all(Radius.circular(30))),
-//                      child: Center(
-//                        child: Text(
-//                          'Contact support ',
-//                          style: TextStyle(
-//                              fontSize: 20.0,
-//                              // fontWeight: FontWeight.bold,
-//                              color: Colors.white,
-//                              fontFamily: 'RobotoMedium'),
-//                        ),
-//                      ),
-//                    ),
-//                  )
-//                ],
-//              ),
-//            )
-//          ],
-//        ),
-//      ),
-//    );
-//  }
-//
-//  Widget decriptionCard(String title, String desc) {
-//    return Card(
-//      color: Colors.white.withOpacity(0.9),
-//      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-//      elevation: 15,
-//      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//      child: Padding(
-//        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-//        child: Column(
-//          children: <Widget>[
-//            Align(
-//              alignment: Alignment.topLeft,
-//              child: Text(
-//                '${title} :',
-//                style: subtitle,
-//              ),
-//            ),
-//            new Text(
-//              desc.replaceAll('\\n', '\n').trim(),
-//              style: description,
-//            )
-//          ],
-//        ),
-//      ),
-//    );
-//  }
-//
-//  Widget rewardCard() {
-//    return Card(
-//        color: Colors.white.withOpacity(0.9),
-//        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-//        elevation: 15,
-//        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//        child: Padding(
-//          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-//          child: Column(
-//            children: <Widget>[
-//              Align(
-//                alignment: Alignment.topLeft,
-//                child: Text(
-//                  ' Conversion Details :',
-//                  style: subtitle,
-//                ),
-//              ),
-//              SizedBox(
-//                height: 10,
-//              ),
-//              Container(
-//                padding: EdgeInsets.only(left: 20),
-//                decoration: BoxDecoration(
-//                  //color: Colors.white,
-//
-//                ),
-//                child: Text(
-//                  'song Price: ${widget.song.songPrice}',
-//                  style: description,
-//                ),
-//              ),
-//              SizedBox(
-//                height: 10,
-//              ),
-//              Container(
-//                padding: EdgeInsets.only(left: 20),
-//                decoration: BoxDecoration(
-//                  //color: Colors.white,
-//
-//                ),
-//                child: Text(
-//                  'You will get 60% : ${get60(widget.song.songPrice)}',
-//                  style: description,
-//                ),
-//              ),
-//            ],
-//          ),
-//        ));
-//  }
-//
-//  Widget timingCard() {
-//    return Card(
-//        color: Colors.white.withOpacity(0.9),
-//        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-//        elevation: 15,
-//        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//        child: Padding(
-//          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-//          child: Column(
-//            children: <Widget>[
-//              Align(
-//                alignment: Alignment.topLeft,
-//                child: Text(
-//                  ' Processing Time :',
-//                  style: subtitle,
-//                ),
-//              ),
-//              Text('The money will be transferred via ${widget.song.paytmWallet=='0'?"UPI":widget.song.paytmWallet=='1'?"Paytm Wallet":"PayPal"} (${widget.song.upiNum}) by Date: ${DatetimeHelper(timestamp:(widget.song.buyTime.toDate()).add(new Duration(days: 3)).toLocal().millisecondsSinceEpoch).getDate()}',
-//                style: description,
-//                textAlign: TextAlign.center,
-//              ),
-//
-//            ],
-//          ),
-//        ));
-//  }
-//
-//
-//
-//  }
-//
-//  Widget background() {
-//    return Center(
-//      child: Image.asset('assets/song.png'),
-//    );
-//  }
-//
-//
-//}
+import 'dart:ui';
+import 'dart:async';
+import 'dart:convert';
+import 'package:credicxotask/api_data/api_key.dart';
+import 'package:credicxotask/bloc_services/bookmarks_bloc.dart';
+import 'package:credicxotask/widgets/loading.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:credicxotask/utils/style_guide.dart';
+import 'package:credicxotask/widgets/background.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:credicxotask/models/music_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:credicxotask/bloc_services/check_connectivity_bloc.dart';
+import 'package:credicxotask/bloc_services/loading_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:hive/hive.dart';
+
+class SongDetails extends StatefulWidget {
+  final MusicModel song;
+
+  SongDetails({
+    this.song,
+  });
+
+  @override
+  _SongDetailsState createState() => _SongDetailsState();
+}
+
+class _SongDetailsState extends State<SongDetails> {
+  StreamSubscription subscription;
+
+  void initState() {
+    super.initState();
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.none) {
+        context.bloc<ConnectivityBloc>().add(ConnectivityEvent.off);
+      } else {
+        context.bloc<ConnectivityBloc>().add(ConnectivityEvent.on);
+      }
+    });
+  }
+
+  dispose() {
+    super.dispose();
+
+    subscription.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            expandedHeight: 200.0,
+            floating: false,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent.withOpacity(0.45),
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0.0, 15.0),
+                        blurRadius: 15.0,
+                      ),
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0.0, -10.0),
+                        blurRadius: 10.0,
+                      ),
+                    ],
+                  ),
+                  child: Text("${widget.song.name}",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.4,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 10.0,
+                              color: Colors.black,
+                              offset: Offset(5.0, 5.0),
+                            ),
+                          ],
+                          fontFamily: "RobotoRegular")),
+                ),
+                background: Image.asset("assets/song.png")),
+          ),
+        ];
+      }, body: Builder(builder: (BuildContext context) {
+        return Stack(
+          children: <Widget>[
+            Background(),
+            BlocBuilder<ConnectivityBloc, bool>(builder: (_, connected) {
+              if (connected == true) {
+                if (widget.song.lyrics == null) {
+                  fetchSongData();
+                } else {
+                  context.bloc<LoadingBloc>().add(LoadingEvent.off);
+                }
+                return BlocBuilder<LoadingBloc, bool>(builder: (_, loading) {
+                  if (loading == true) {
+                    return Loading();
+                  } else {
+                    return Container(
+                      height: MediaQuery.of(context).size.height,
+                      //color: Colors.red,
+                      child: ListView(
+                        children: <Widget>[
+                          _bookMarkButton(),
+                          descriptionCard(),
+                          linksCard(),
+                          lyricsCard(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                });
+              } else {
+                return Center(
+                    child: Chip(
+                        label: Text(
+                  "Not Connected",
+                  style: TextStyle(color: Colors.purple, fontSize: 30),
+                  textAlign: TextAlign.center,
+                )));
+              }
+            })
+          ],
+        );
+      })),
+    );
+  }
+
+  Widget _bookMarkButton() {
+    return BlocBuilder<BookMarkBloc, BookMarkEvent>(builder: (_, event) {
+      String getText() {
+        String txt;
+        if (event == BookMarkEvent.neutral) {
+          txt = widget.song.isSaved ? "Remove bookmark" : 'Bookmark this song';
+        } else {
+          txt = event == BookMarkEvent.added
+              ? "Remove bookmark"
+              : 'Bookmark this song';
+        }
+        return txt;
+      }
+
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+        //width: MediaQuery.of(context).size.width * 0.5,
+        child: RaisedButton(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          color: Colors.blue.shade800,
+          onPressed: () {
+            if (event == BookMarkEvent.neutral) {
+              widget.song.isSaved ? _remBookmark() : _addBookmark();
+            } else {
+              event == BookMarkEvent.added ? _remBookmark() : _addBookmark();
+            }
+          },
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          child: Center(
+            child: Text(
+              getText(),
+              style: TextStyle(
+                  fontSize: 20.0,
+                  // fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontFamily: 'RobotoMedium'),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget descriptionCard() {
+    return Card(
+      color: Colors.white.withOpacity(0.9),
+      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      elevation: 15,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                '${'Description'} :',
+                style: subtitle,
+              ),
+            ),
+            new Text(
+              "Song Name:\n${widget.song.name}\n\n"
+              "Artist Name:\n${widget.song.artistName}\n\n"
+              "Album Name:\n${widget.song.albumName}\n\n"
+              "Explicit:\n${widget.song.explicit == '0' ? "No" : "Yes"}\n\n"
+              "Rating:\n${widget.song.rating}\n\n"
+              "Favourites:\n${widget.song.favs}\n\n",
+              style: description,
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget linksCard() {
+    return Card(
+        color: Colors.white.withOpacity(0.9),
+        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        elevation: 15,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Row(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  ' Links :',
+                  style: subtitle,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20),
+                decoration: BoxDecoration(
+                    //color: Colors.white,
+
+                    ),
+                child: IconButton(
+                  onPressed: () {
+                    launch(widget.song.url);
+                  },
+                  icon: Icon(FontAwesomeIcons.music),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20),
+                decoration: BoxDecoration(
+                    //color: Colors.white,
+
+                    ),
+                child: IconButton(
+                  onPressed: () {
+                    launch(widget.song.lyricUrl);
+                  },
+                  icon: Icon(FontAwesomeIcons.envelopeOpenText),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget lyricsCard() {
+    return Card(
+        color: Colors.white.withOpacity(0.9),
+        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        elevation: 15,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  ' Lyrics :',
+                  style: subtitle,
+                ),
+              ),
+              Text(
+                widget.song.lyrics,
+                style: description,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget background() {
+    return Center(
+      child: Image.asset('assets/song.png'),
+    );
+  }
+
+  _addBookmark() async {
+    Box _trackBox = await Hive.openBox('trackBox');
+    widget.song.isSaved = true;
+    _trackBox.add(widget.song);
+
+    Fluttertoast.showToast(
+        msg: "This song is added to bookmarks successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+    context.bloc<BookMarkBloc>().add(BookMarkEvent.added);
+  }
+
+  _remBookmark() async {
+    Box _trackBox = await Hive.openBox('trackBox');
+    for (int i = 0; i < _trackBox.length; i++) {
+      MusicModel track = _trackBox.getAt(i);
+      if (track.trackId == widget.song.trackId) {
+        widget.song.isSaved = false;
+        track.delete();
+      }
+      context.bloc<BookMarkBloc>().add(BookMarkEvent.removed);
+    }
+
+    Fluttertoast.showToast(
+        msg: "This song is removed from bookmarks successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
+  void getSongDetails() async {
+    //data already stored in MusicModel
+    http.Response response = await http.get(
+        'https://api.musixmatch.com/ws/1.1/track.get?track_id=${widget.song.trackId}&apikey=$apiKey');
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      print(json);
+    } else {
+      throw Exception('Failed to load track data');
+    }
+  }
+
+  void getSongLyrics() async {
+    http.Response response = await http.get(
+        'https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${widget.song.trackId}&apikey=$apiKey');
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      print("Lyrics response=$json");
+      String lyrics = json['message']['body']['lyrics']['lyrics_body'];
+      widget.song.lyrics = lyrics;
+    } else {
+      throw Exception('Failed to load track data');
+    }
+  }
+
+  void fetchSongData() async {
+    await getSongLyrics();
+    // await getSongDetails();
+    context.bloc<LoadingBloc>().add(LoadingEvent.off);
+  }
+}
