@@ -1,24 +1,13 @@
-import 'dart:convert';
-import 'dart:async';
-import 'dart:io';
-import 'package:credicxotask/api_data/api_key.dart';
 import 'package:credicxotask/bloc_services/bookmarks_bloc.dart';
 import 'package:credicxotask/models/music_model.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:credicxotask/bloc_services/check_connectivity_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:credicxotask/widgets/song_card.dart';
 import 'package:credicxotask/widgets/loading.dart';
 import 'package:credicxotask/widgets/background.dart';
-import 'package:connectivity/connectivity.dart';
-
-//import 'package:credicxotask/pages/api_error.dart';
 import 'package:credicxotask/widgets/empty_card.dart';
 import 'package:credicxotask/bloc_services/loading_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 
 class SavedMusicList extends StatefulWidget {
   @override
@@ -59,7 +48,7 @@ class _SavedMusicListState extends State<SavedMusicList> {
       } else {
         return BlocBuilder<BookMarkBloc, BookMarkEvent>(builder: (_, event) {
           print(event);
-          if(event!=BookMarkEvent.neutral){
+          if (event != BookMarkEvent.neutral) {
             fetchMusic();
           }
           return songs.length == 0
@@ -78,7 +67,7 @@ class _SavedMusicListState extends State<SavedMusicList> {
   }
 
   void fetchMusic() async {
-    songs=[];
+    songs = [];
     print("fetchMusic called");
     Box _trackBox = await Hive.openBox('trackBox');
     print(_trackBox.length);
@@ -87,6 +76,5 @@ class _SavedMusicListState extends State<SavedMusicList> {
     }
     context.bloc<BookMarkBloc>().add(BookMarkEvent.neutral);
     context.bloc<LoadingBloc>().add(LoadingEvent.off);
-
   }
 }

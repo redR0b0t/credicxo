@@ -359,7 +359,7 @@ class _SongDetailsState extends State<SongDetails> {
     }
   }
 
-  void getSongLyrics() async {
+  Future<void> getSongLyrics() async {
     http.Response response = await http.get(
         'https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${widget.song.trackId}&apikey=$apiKey');
     if (response.statusCode == 200) {

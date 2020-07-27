@@ -108,7 +108,7 @@ class _MusicListState extends State<MusicList> {
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       var message = json['message'];
-      var header = message['header'];
+
       var body = message['body'];
       List tracksJSON = [];
       if (body.length == 0) {
